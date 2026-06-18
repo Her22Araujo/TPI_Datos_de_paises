@@ -130,31 +130,180 @@ def buscar_exacto(paises: list, nombre: str):
 
 def filtrar_paises(paises: list) -> None:
     """Submenú de filtros."""
+
     print("\n── Filtrar países ──")
     print("1. Por continente")
     print("2. Por rango de población")
     print("3. Por rango de superficie")
+
     opcion = input("Opción: ").strip()
 
+    # =====================================
+    # FILTRO POR CONTINENTE
+    # =====================================
+
     if opcion == "1":
-        continente = input("Continente: ").strip()
-        resultado = [p for p in paises if p["continente"].lower() == continente.lower()]
-        mostrar_lista(resultado, f"Países en {continente}")
+
+        continentes = {}
+
+        for pais in paises:
+
+            continente = pais["continente"]
+
+            if continente not in continentes:
+                continentes[continente] = 0
+
+            continentes[continente] += 1
+
+        print("\nContinentes disponibles:")
+
+        lista_continentes = list(continentes.keys())
+
+        for i, continente in enumerate(lista_continentes, start=1):
+
+            print(
+                f"{i}. {continente} "
+                f"({continentes[continente]} países)"
+            )
+
+        try:
+
+            opcion_continente = int(
+                input("\nSeleccione un continente: ")
+            )
+
+            if not (
+                1 <= opcion_continente <= len(lista_continentes)
+            ):
+
+                print("\n[ERROR] Opción inválida.")
+                return
+
+        except ValueError:
+
+            print("\n[ERROR] Debe ingresar un número.")
+            return
+
+        continente_elegido = lista_continentes[
+            opcion_continente - 1
+        ]
+
+        paises_continente = []
+
+        for pais in paises:
+
+            if (
+                pais["continente"].lower()
+                == continente_elegido.lower()
+            ):
+
+                paises_continente.append(pais)
+
+        print(f"\nPaíses de {continente_elegido}:")
+
+        for i, pais in enumerate(
+            paises_continente,
+            start=1
+        ):
+
+            print(f"{i}. {pais['nombre']}")
+
+        try:
+
+            opcion_pais = int(
+                input(
+                    "\nSeleccione un país: "
+                )
+            )
+
+            if not (
+                1 <= opcion_pais <= len(paises_continente)
+            ):
+
+                print("\n[ERROR] Opción inválida.")
+                return
+
+        except ValueError:
+
+            print("\n[ERROR] Debe ingresar un número.")
+            return
+
+        pais = paises_continente[
+            opcion_pais - 1
+        ]
+
+        print("\n===== DATOS DEL PAÍS =====")
+
+        print(
+            f"Nombre: {pais['nombre']}"
+        )
+
+        print(
+            f"Población: "
+            f"{pais['poblacion']:,}"
+        )
+
+        print(
+            f"Superficie: "
+            f"{pais['superficie']:,} km²"
+        )
+
+        print(
+            f"Continente: "
+            f"{pais['continente']}"
+        )
+
+    # =====================================
+    # FILTRO POR POBLACION
+    # =====================================
 
     elif opcion == "2":
-        min_pob = pedir_entero("Población mínima: ")
-        max_pob = pedir_entero("Población máxima: ")
-        resultado = [p for p in paises if min_pob <= p["poblacion"] <= max_pob]
-        mostrar_lista(resultado, f"Población entre {min_pob:,} y {max_pob:,}")
-
+        min_pob = pedir_entero(
+            "Población mínima: "
+        )
+        max_pob = pedir_entero(
+            "Población máxima: "
+        )
+        resultado = []
+        for pais in paises:
+            if (
+                min_pob
+                <= pais["poblacion"]
+                <= max_pob
+            ):
+                resultado.append(pais)
+        mostrar_lista(
+            resultado,
+            f"Población entre "
+            f"{min_pob:,} y {max_pob:,}"
+        )
+    # =====================================
+    # FILTRO POR SUPERFICIE
+    # =====================================
     elif opcion == "3":
-        min_sup = pedir_entero("Superficie mínima (km²): ")
-        max_sup = pedir_entero("Superficie máxima (km²): ")
-        resultado = [p for p in paises if min_sup <= p["superficie"] <= max_sup]
-        mostrar_lista(resultado, f"Superficie entre {min_sup:,} y {max_sup:,} km²")
-
+        min_sup = pedir_entero(
+            "Superficie mínima (km²): "
+        )
+        max_sup = pedir_entero(
+            "Superficie máxima (km²): "
+        )
+        resultado = []
+        for pais in paises:
+            if (
+                min_sup
+                <= pais["superficie"]
+                <= max_sup
+            ):
+                resultado.append(pais)
+        mostrar_lista(
+            resultado,
+            f"Superficie entre "
+            f"{min_sup:,} y {max_sup:,} km²"
+        )
     else:
-        print("[ERROR] Opción inválida.")
+        print(
+            "\n[ERROR] Opción inválida."
+        )
 
 
 # ─────────────────────────────────────────────

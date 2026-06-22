@@ -5,6 +5,7 @@ Gestión de Datos de Países en Python
 
 import csv
 import os
+import unicodedata
 
 ARCHIVO_CSV = "paises.csv"
 
@@ -129,18 +130,16 @@ def buscar_exacto(paises: list, nombre: str):
 # ─────────────────────────────────────────────
 
 def filtrar_paises(paises: list) -> None:
-    """Submenú de filtros."""
-
+    """Submenú para filtrar países por continente, población o superficie."""
     print("\n── Filtrar países ──")
     print("1. Por continente")
-    print("2. Por rango de población")
-    print("3. Por rango de superficie")
-
+    print("2. Por población")
+    print("3. Por superficie")
     opcion = input("Opción: ").strip()
 
-# ─────────────────────────────────────────────
-# FILTRO POR CONTINENTE
-# ─────────────────────────────────────────────
+    # ─────────────────────────────────────────────
+    # FILTRO POR CONTINENTE
+    # ─────────────────────────────────────────────
 
     if opcion == "1":
         continentes = {}
@@ -151,72 +150,44 @@ def filtrar_paises(paises: list) -> None:
             continentes[continente] += 1
         print("\nContinentes disponibles:")
         lista_continentes = list(continentes.keys())
-        for i, continente in enumerate(lista_continentes, start=1):
+        for i, continente in enumerate(
+            lista_continentes,
+            start=1
+        ):
             print(
                 f"{i}. {continente} "
                 f"({continentes[continente]} países)"
             )
-        try:
-            opcion_continente = int(
-                input("\nSeleccione un continente: ")
-            )
-            if not (
-                1 <= opcion_continente <= len(lista_continentes)
-            ):
-                print("\n[ERROR] Opción inválida.")
-                return
-        except ValueError:
-            print("\n[ERROR] Debe ingresar un número.")
-            return
-        continente_elegido = lista_continentes[
-            opcion_continente - 1
-        ]
+        continente_elegido = input(
+            "\nIngrese un continente: "
+        ).strip()
         paises_continente = []
         for pais in paises:
             if (
-                pais["continente"].lower()
-                == continente_elegido.lower()
+                normalizar_texto(
+                    pais["continente"]
+                )
+                ==
+                normalizar_texto(
+                    continente_elegido
+                )
             ):
                 paises_continente.append(pais)
-        print(f"\nPaíses de {continente_elegido}:")
-        for i, pais in enumerate(
-            paises_continente,
-            start=1
-        ):
-            print(f"{i}. {pais['nombre']}")
-        try:
-            opcion_pais = int(
-                input(
-                    "\nSeleccione un país: "
-                )
+        if len(paises_continente) == 0:
+            print(
+                "\n[ERROR] No existe ese continente."
             )
-            if not (
-                1 <= opcion_pais <= len(paises_continente)
+        else:
+            print(
+                f"\nPaíses de {continente_elegido}:"
+            )
+            for i, pais in enumerate(
+                paises_continente,
+                start=1
             ):
-                print("\n[ERROR] Opción inválida.")
-                return
-        except ValueError:
-            print("\n[ERROR] Debe ingresar un número.")
-            return
-        pais = paises_continente[
-            opcion_pais - 1
-        ]
-        print("\n===== DATOS DEL PAÍS =====")
-        print(
-            f"Nombre: {pais['nombre']}"
-        )
-        print(
-            f"Población: "
-            f"{pais['poblacion']:,}"
-        )
-        print(
-            f"Superficie: "
-            f"{pais['superficie']:,} km²"
-        )
-        print(
-            f"Continente: "
-            f"{pais['continente']}"
-        )
+                print(
+                    f"{i}. {pais['nombre']}"
+                )
 
 # ─────────────────────────────────────────────
 # FILTRO POR POBLACION
@@ -369,6 +340,13 @@ def pedir_entero_opcional(mensaje: str, default: int) -> int:
         if valor.isdigit() and int(valor) > 0:
             return int(valor)
         print("[ERROR] Ingresá un número entero positivo o presioná Enter para mantener.")
+
+
+def normalizar_texto(texto: str) -> str:
+    """Normaliza texto para comparar ignorando mayúsculas y acentos."""
+    texto = unicodedata.normalize("NFKD", texto)
+    texto = "".join(c for c in texto if not unicodedata.combining(c))
+    return texto.strip().lower()
 
 
 # ─────────────────────────────────────────────

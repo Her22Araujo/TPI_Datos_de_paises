@@ -138,9 +138,9 @@ def filtrar_paises(paises: list) -> None:
 
     opcion = input("Opción: ").strip()
 
-    # =====================================
-    # FILTRO POR CONTINENTE
-    # =====================================
+# ─────────────────────────────────────────────
+# FILTRO POR CONTINENTE
+# ─────────────────────────────────────────────
 
     if opcion == "1":
 
@@ -253,9 +253,9 @@ def filtrar_paises(paises: list) -> None:
             f"{pais['continente']}"
         )
 
-    # =====================================
-    # FILTRO POR POBLACION
-    # =====================================
+# ─────────────────────────────────────────────
+# FILTRO POR POBLACION
+# ─────────────────────────────────────────────
 
     elif opcion == "2":
         min_pob = pedir_entero(
@@ -277,9 +277,11 @@ def filtrar_paises(paises: list) -> None:
             f"Población entre "
             f"{min_pob:,} y {max_pob:,}"
         )
-    # =====================================
-    # FILTRO POR SUPERFICIE
-    # =====================================
+
+# ─────────────────────────────────────────────
+# FILTRO POR SUPERFICIE
+# ─────────────────────────────────────────────
+
     elif opcion == "3":
         min_sup = pedir_entero(
             "Superficie mínima (km²): "

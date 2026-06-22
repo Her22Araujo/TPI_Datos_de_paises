@@ -14,7 +14,6 @@ ARCHIVO_CSV = "paises.csv"
 # ─────────────────────────────────────────────
 
 def cargar_paises(ruta: str) -> list:
-    """Lee el archivo CSV y devuelve una lista de diccionarios."""
     paises = []
     if not os.path.exists(ruta):
         print(f"[ERROR] No se encontró el archivo '{ruta}'.")
@@ -38,7 +37,6 @@ def cargar_paises(ruta: str) -> list:
 
 
 def guardar_paises(paises: list, ruta: str) -> None:
-    """Guarda la lista de países en el CSV."""
     try:
         with open(ruta, "w", newline="", encoding="utf-8") as f:
             campos = ["nombre", "poblacion", "superficie", "continente"]
@@ -54,7 +52,6 @@ def guardar_paises(paises: list, ruta: str) -> None:
 # ─────────────────────────────────────────────
 
 def agregar_pais(paises: list) -> None:
-    """Solicita datos al usuario y agrega un nuevo país."""
     print("\n── Agregar país ──")
     nombre = input("Nombre: ").strip().title()
     if not nombre:
@@ -94,7 +91,6 @@ def agregar_pais(paises: list) -> None:
 
 
 def actualizar_pais(paises: list) -> None:
-    """Actualiza población y/o superficie de un país existente."""
     print("\n── Actualizar país ──")
     nombre = input("Nombre del país a actualizar: ").strip()
     pais = buscar_exacto(paises, nombre)
@@ -117,7 +113,6 @@ def actualizar_pais(paises: list) -> None:
 # ─────────────────────────────────────────────
 
 def buscar_pais(paises: list) -> None:
-    """Busca países por nombre (coincidencia parcial o exacta)."""
     print("\n── Buscar país ──")
     termino = input("Nombre (parcial o exacto): ").strip().lower()
     if not termino:
@@ -128,7 +123,6 @@ def buscar_pais(paises: list) -> None:
 
 
 def buscar_exacto(paises: list, nombre: str):
-    """Devuelve el diccionario del país con ese nombre exacto (case-insensitive), o None."""
     for p in paises:
         if p["nombre"].lower() == nombre.lower():
             return p
@@ -140,7 +134,6 @@ def buscar_exacto(paises: list, nombre: str):
 # ─────────────────────────────────────────────
 
 def filtrar_paises(paises: list) -> None:
-    """Submenú para filtrar países por continente, población o superficie."""
     print("\n── Filtrar países ──")
     print("1. Por continente")
     print("2. Por población")
@@ -259,7 +252,6 @@ def filtrar_paises(paises: list) -> None:
 # ─────────────────────────────────────────────
 
 def ordenar_paises(paises: list) -> None:
-    """Submenú de ordenamiento."""
     print("\n── Ordenar países ──")
     print("1. Por nombre")
     print("2. Por población")
@@ -287,7 +279,6 @@ def ordenar_paises(paises: list) -> None:
 # ─────────────────────────────────────────────
 
 def mostrar_estadisticas(paises: list) -> None:
-    """Calcula y muestra estadísticas básicas del dataset."""
     if not paises:
         print("[ERROR] No hay datos para calcular estadísticas.")
         return
@@ -320,7 +311,6 @@ def mostrar_estadisticas(paises: list) -> None:
 # ─────────────────────────────────────────────
 
 def mostrar_lista(paises: list, titulo: str = "Países") -> None:
-    """Imprime una lista de países en formato tabla."""
     if not paises:
         print(f"[INFO] Sin resultados para: {titulo}.")
         return
@@ -333,7 +323,6 @@ def mostrar_lista(paises: list, titulo: str = "Países") -> None:
 
 
 def pedir_entero(mensaje: str) -> int:
-    """Pide un entero positivo al usuario con validación."""
     while True:
         valor = input(mensaje).strip()
         if valor.isdigit() and int(valor) > 0:
@@ -342,7 +331,6 @@ def pedir_entero(mensaje: str) -> int:
 
 
 def pedir_entero_opcional(mensaje: str, default: int) -> int:
-    """Pide un entero o devuelve el valor por defecto si se presiona Enter."""
     while True:
         valor = input(mensaje).strip()
         if valor == "":
@@ -353,7 +341,6 @@ def pedir_entero_opcional(mensaje: str, default: int) -> int:
 
 
 def normalizar_texto(texto: str) -> str:
-    """Normaliza texto para comparar ignorando mayúsculas y acentos."""
     texto = unicodedata.normalize("NFKD", texto)
     texto = "".join(c for c in texto if not unicodedata.combining(c))
     return texto.strip().lower()
@@ -364,7 +351,6 @@ def normalizar_texto(texto: str) -> str:
 # ─────────────────────────────────────────────
 
 def menu() -> None:
-    """Loop principal del programa."""
     paises = cargar_paises(ARCHIVO_CSV)
     print(f"\n=== Gestión de Países === ({len(paises)} países cargados)\n")
 

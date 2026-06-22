@@ -56,31 +56,41 @@ def guardar_paises(paises: list, ruta: str) -> None:
 def agregar_pais(paises: list) -> None:
     """Solicita datos al usuario y agrega un nuevo país."""
     print("\n── Agregar país ──")
-    nombre = input("Nombre: ").strip()
+    nombre = input("Nombre: ").strip().title()
     if not nombre:
         print("[ERROR] El nombre no puede estar vacío.")
         return
-
-    # Verificar duplicado
-    if any(p["nombre"].lower() == nombre.lower() for p in paises):
+    if any(
+        p["nombre"].upper() == nombre.upper()
+        for p in paises
+    ):
         print(f"[ERROR] Ya existe un país llamado '{nombre}'.")
         return
-
     poblacion = pedir_entero("Población: ")
-    superficie = pedir_entero("Superficie (km²): ")
-    continente = input("Continente: ").strip()
+    superficie = pedir_entero(
+        "Superficie (km²): "
+    )
+    continente = input(
+        "Continente: "
+    ).strip().title()
     if not continente:
         print("[ERROR] El continente no puede estar vacío.")
         return
-
-    paises.append({
-        "nombre": nombre,
-        "poblacion": poblacion,
-        "superficie": superficie,
-        "continente": continente
-    })
-    guardar_paises(paises, ARCHIVO_CSV)
-    print(f"[OK] '{nombre}' agregado correctamente.")
+    paises.append(
+        {
+            "nombre": nombre,
+            "poblacion": poblacion,
+            "superficie": superficie,
+            "continente": continente
+        }
+    )
+    guardar_paises(
+        paises,
+        ARCHIVO_CSV
+    )
+    print(
+        f"[OK] '{nombre}' agregado correctamente."
+    )
 
 
 def actualizar_pais(paises: list) -> None:

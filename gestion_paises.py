@@ -143,111 +143,76 @@ def filtrar_paises(paises: list) -> None:
 # ─────────────────────────────────────────────
 
     if opcion == "1":
-
         continentes = {}
-
         for pais in paises:
-
             continente = pais["continente"]
-
             if continente not in continentes:
                 continentes[continente] = 0
-
             continentes[continente] += 1
-
         print("\nContinentes disponibles:")
-
         lista_continentes = list(continentes.keys())
-
         for i, continente in enumerate(lista_continentes, start=1):
-
             print(
                 f"{i}. {continente} "
                 f"({continentes[continente]} países)"
             )
-
         try:
-
             opcion_continente = int(
                 input("\nSeleccione un continente: ")
             )
-
             if not (
                 1 <= opcion_continente <= len(lista_continentes)
             ):
-
                 print("\n[ERROR] Opción inválida.")
                 return
-
         except ValueError:
-
             print("\n[ERROR] Debe ingresar un número.")
             return
-
         continente_elegido = lista_continentes[
             opcion_continente - 1
         ]
-
         paises_continente = []
-
         for pais in paises:
-
             if (
                 pais["continente"].lower()
                 == continente_elegido.lower()
             ):
-
                 paises_continente.append(pais)
-
         print(f"\nPaíses de {continente_elegido}:")
-
         for i, pais in enumerate(
             paises_continente,
             start=1
         ):
-
             print(f"{i}. {pais['nombre']}")
-
         try:
-
             opcion_pais = int(
                 input(
                     "\nSeleccione un país: "
                 )
             )
-
             if not (
                 1 <= opcion_pais <= len(paises_continente)
             ):
-
                 print("\n[ERROR] Opción inválida.")
                 return
-
         except ValueError:
-
             print("\n[ERROR] Debe ingresar un número.")
             return
-
         pais = paises_continente[
             opcion_pais - 1
         ]
-
         print("\n===== DATOS DEL PAÍS =====")
-
         print(
             f"Nombre: {pais['nombre']}"
         )
-
         print(
             f"Población: "
             f"{pais['poblacion']:,}"
         )
-
         print(
             f"Superficie: "
             f"{pais['superficie']:,} km²"
         )
-
         print(
             f"Continente: "
             f"{pais['continente']}"
@@ -348,15 +313,12 @@ def mostrar_estadisticas(paises: list) -> None:
 
     print("\n── Estadísticas ──")
 
-    # Población
     max_pob = max(paises, key=lambda p: p["poblacion"])
     min_pob = min(paises, key=lambda p: p["poblacion"])
     prom_pob = sum(p["poblacion"] for p in paises) / len(paises)
 
-    # Superficie
     prom_sup = sum(p["superficie"] for p in paises) / len(paises)
 
-    # Cantidad por continente
     continentes = {}
     for p in paises:
         c = p["continente"]

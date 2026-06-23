@@ -3,6 +3,7 @@
 > Trabajo Práctico Integrador — Programación 1  
 > Tecnicatura Universitaria en Programación a Distancia — UTN
 
+Link del repositorio a GitHub: https://github.com/Her22Araujo/TPI_Datos_de_paises.git
 
 
 Aplicación de consola desarrollada en Python 3 que permite gestionar información sobre países del mundo. El sistema lee y persiste datos en un archivo CSV y ofrece un menú interactivo con las siguientes funcionalidades:
